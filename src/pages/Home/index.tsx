@@ -32,13 +32,24 @@ const Home = (): JSX.Element => {
   useEffect(() => {
     async function loadProducts() {
       const response = await api.get("/products");
-      return response.data;
+      const data = response.data;
+
+      const productsFormatedPrice = data.map((product: Product) => ({
+        ...product,
+        price: formatPrice(product.price),
+      }));
+      console.log(productsFormatedPrice);
       // TODO
     }
     loadProducts();
   }, []);
 
   function handleAddProduct(id: number) {
+    products.forEach((product) => {
+      if (product.id === id) {
+        // addProduct([...cart,product])
+      }
+    });
     // TODO
   }
 
