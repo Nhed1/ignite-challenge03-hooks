@@ -32,10 +32,16 @@ const Home = (): JSX.Element => {
 
   useEffect(() => {
     async function loadProducts() {
-      // const productsFormatedPrice = data.map((product: Product) => ({ ...product, price: formatPrice(product.price) }))
-      // TODO
+      const productsFromApi = api
+        .get("/products")
+        .then((response) => response.data)
+        .then((data) =>
+          data.map((product: Product) => ({
+            ...product,
+            price: formatPrice(product.price),
+          }))
+        );
     }
-
     loadProducts();
   }, []);
 
