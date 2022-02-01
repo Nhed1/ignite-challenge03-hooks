@@ -48,12 +48,7 @@ const Home = (): JSX.Element => {
   }, []);
 
   function handleAddProduct(id: number) {
-    products.forEach((product) => {
-      if (product.id === id) {
-        addProduct([...cart, product]);
-      }
-      console.log(cart);
-    });
+    addProduct(id);
   }
 
   return (
