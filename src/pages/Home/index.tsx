@@ -26,24 +26,22 @@ const Home = (): JSX.Element => {
   const { addProduct, cart } = useCart();
 
   const cartItemsAmount = cart.reduce((sumAmount, product) => {
-    sumAmount[product.id] = product.amount;
-    return sumAmount;
+    const newSumAmount = { ...sumAmount };
+    newSumAmount[product.id] = product.amount;
+    return newSumAmount;
   }, {} as CartItemsAmount);
 
   useEffect(() => {
     async function loadProducts() {
-      api
-        .get("/products")
-        .then((response) => response.data)
-        .then((data) =>
-          data.map((product: Product) => ({
-            ...product,
-            price: formatPrice(product.price),
-          }))
-        )
-        .then((results) => setProducts(results));
-    }
+      // passa a tipagem pelo axios
+      const response = await api.get<Product[]>("products");
+      const data = response.data.map((product) => ({
+        ...product,
+        priceFormatted: formatPrice(product.price),
+      }));
 
+      setProducts(data);
+    }
     loadProducts();
   }, []);
 
@@ -58,7 +56,7 @@ const Home = (): JSX.Element => {
           <li key={product.id}>
             <img src={product.image} alt={product.title} />
             <strong>{product.title}</strong>
-            <span>{product.price}</span>
+            <span>{product.priceFormatted}</span>
             <button
               type="button"
               data-testid="add-product-button"
